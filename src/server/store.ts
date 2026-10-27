@@ -1,3 +1,5 @@
+import { ownerCondition } from "./access-control/index";
+export { ownerCondition } from "./access-control/index";
 import { seoulDate, minutesBetween } from "../shared/domain";
 import type { DiaryState } from "../shared/domain";
 export interface Statement {
@@ -72,15 +74,22 @@ function planFields(d: Data) {
 }
 const id = () => crypto.randomUUID();
 const snapshot = `INSERT INTO plan_revisions (revision_id,plan_id,version,title,start_date,end_date,priority,success_criteria,estimated_minutes,created_at,updated_at) SELECT ?,id,version,title,start_date,end_date,priority,success_criteria,estimated_minutes,created_at,updated_at FROM plans WHERE id=?`;
-function stateQueries(db: Database) {
+export const LEGACY_OWNER = "__legacy_unclaimed__";
+function stateQueries(db: Database, ownerId: string) {
   return [
-    db.prepare("SELECT * FROM plans ORDER BY created_at,id"),
-    db.prepare("SELECT *,plan_id AS id FROM plan_revisions ORDER BY version"),
-    db.prepare("SELECT * FROM tasks ORDER BY created_at,id"),
-    db.prepare("SELECT * FROM executions ORDER BY started_at,id"),
-    db.prepare("SELECT * FROM timers"),
-    db.prepare("SELECT * FROM reviews ORDER BY created_at DESC,id"),
-  ];
+    ["plans", "*", "created_at,id"],
+    ["plan_revisions", "*,plan_id AS id", "version"],
+    ["tasks", "*", "created_at,id"],
+    ["executions", "*", "started_at,id"],
+    ["timers", "*", "task_id"],
+    ["reviews", "*", "created_at DESC,id"],
+  ].map(([table, fields, order]) =>
+    db
+      .prepare(
+        `SELECT ${fields} FROM ${table} WHERE ${ownerCondition(table)} ORDER BY ${order}`,
+      )
+      .bind(ownerId),
+  );
 }
 function stateFromRows(
   rows: { results: Record<string, unknown>[] }[],
@@ -99,9 +108,12 @@ function stateFromRows(
     today: seoulDate(),
   } as DiaryState;
 }
-export async function readState(db: Database): Promise<DiaryState> {
+export async function readState(
+  db: Database,
+  ownerId = LEGACY_OWNER,
+): Promise<DiaryState> {
   return stateFromRows(
-    (await db.batch(stateQueries(db))) as {
+    (await db.batch(stateQueries(db, ownerId))) as {
       results: Record<string, unknown>[];
     }[],
   );
@@ -109,11 +121,13 @@ export async function readState(db: Database): Promise<DiaryState> {
 export async function mutate(
   db: Database,
   body: Data,
+  ownerId = LEGACY_OWNER,
 ): Promise<{ id: string }> {
-  const action = text(body, "action", 40),
-    requestId = text(body, "requestId", 100);
+  const action = text(body, "action", 40);
+  let requestId = text(body, "requestId", 100);
   if (!/^[a-zA-Z0-9_-]{8,100}$/.test(requestId))
     throw new AppError("요청 식별자가 올바르지 않습니다.");
+  requestId = `${ownerId}:${requestId}`;
   const data = body.data;
   if (!data || typeof data !== "object" || Array.isArray(data))
     throw new AppError("입력 내용을 확인해 주세요.");
@@ -153,9 +167,9 @@ export async function mutate(
   async function requireRow(table: string, rowId: string, active = false) {
     const row = await db
       .prepare(
-        `SELECT * FROM ${table} WHERE id=?${active ? " AND deleted_at IS NULL" : ""}`,
+        `SELECT * FROM ${table} WHERE id=? AND ${ownerCondition(table)}${active ? " AND deleted_at IS NULL" : ""}`,
       )
-      .bind(rowId)
+      .bind(rowId, ownerId)
       .first();
     if (!row)
       throw new AppError("기록을 찾을 수 없습니다. 새로고침해 주세요.", 404);
@@ -172,8 +186,8 @@ export async function mutate(
         );
       } else
         sql(
-          "INSERT INTO plans (id,title,start_date,end_date,priority,success_criteria,estimated_minutes,version,created_at,updated_at) SELECT ?,?,?,?,?,?,?,1,?,? WHERE 1",
-          [resultId, ...values, now, now],
+          "INSERT INTO plans (id,owner_id,title,start_date,end_date,priority,success_criteria,estimated_minutes,version,created_at,updated_at) SELECT ?,?,?,?,?,?,?,?,1,?,? WHERE 1",
+          [resultId, ownerId, ...values, now, now],
         );
       sql(snapshot, [id(), resultId]);
       break;
@@ -355,8 +369,8 @@ export async function mutate(
           throw new AppError("원래 계획의 할 일만 복사할 수 있습니다.");
       }
       sql(
-        "INSERT INTO plans (id,title,start_date,end_date,priority,success_criteria,estimated_minutes,version,created_at,updated_at) SELECT ?,?,?,?,?,?,?,1,?,? FROM reviews WHERE id=? AND next_plan_id IS NULL",
-        [resultId, ...values, now, now, reviewId],
+        "INSERT INTO plans (id,owner_id,title,start_date,end_date,priority,success_criteria,estimated_minutes,version,created_at,updated_at) SELECT ?,?,?,?,?,?,?,?,1,?,? FROM reviews WHERE id=? AND next_plan_id IS NULL",
+        [resultId, ownerId, ...values, now, now, reviewId],
       );
       sql(snapshot, [id(), resultId]);
       for (const taskId of taskIds)
@@ -376,9 +390,9 @@ export async function mutate(
   statements.push(
     db
       .prepare(
-        "INSERT OR IGNORE INTO commands (id,fingerprint,result_id,created_at) VALUES (?,?,?,?)",
+        "INSERT OR IGNORE INTO commands (id,owner_id,fingerprint,result_id,created_at) VALUES (?,?,?,?,?)",
       )
-      .bind(requestId, fingerprint, resultId, now),
+      .bind(requestId, ownerId, fingerprint, resultId, now),
   );
   await db.batch(statements);
   const saved = await db
@@ -399,11 +413,15 @@ export async function mutate(
   }
   return { id: String(saved.result_id) };
 }
-export async function exportData(db: Database) {
+export async function exportData(db: Database, ownerId = LEGACY_OWNER) {
   // Export every relation in one snapshot even when another visitor writes.
   const rows = (await db.batch([
-    ...stateQueries(db),
-    db.prepare("SELECT * FROM completions ORDER BY created_at,id"),
+    ...stateQueries(db, ownerId),
+    db
+      .prepare(
+        `SELECT * FROM completions WHERE ${ownerCondition("completions")} ORDER BY created_at,id`,
+      )
+      .bind(ownerId),
   ])) as { results: Record<string, unknown>[] }[];
   const state = stateFromRows(rows);
   return {
@@ -414,4 +432,25 @@ export async function exportData(db: Database) {
     ...state,
     completions: rows[6].results,
   };
+}
+
+export async function readRecord(
+  db: Database,
+  ownerId: string,
+  table: unknown,
+  rowId: unknown,
+) {
+  if (
+    typeof table !== "string" ||
+    !["plans", "tasks", "executions", "reviews"].includes(table) ||
+    typeof rowId !== "string" ||
+    rowId.length > 100
+  )
+    throw new AppError("자료 조회 요청을 확인해 주세요.", 400);
+  const row = await db
+    .prepare(`SELECT * FROM ${table} WHERE id=? AND ${ownerCondition(table)}`)
+    .bind(rowId, ownerId)
+    .first();
+  if (!row) throw new AppError("기록을 찾을 수 없습니다.", 404);
+  return row;
 }

@@ -13,7 +13,15 @@ import {
   X,
   BookOpen,
   Share2,
+  FlaskConical,
+  Upload,
+  Settings,
 } from "lucide-react";
+import ExperimentView from "./features/experiment/ExperimentView";
+import MigrationView from "./features/migration/MigrationView";
+import AccountView from "./features/account/AccountView";
+import type { Identity } from "./features/auth/AuthForm";
+import { announceAuth } from "./features/auth/events";
 import TodayView from "./features/today/TodayView";
 import { PlansGrid, PlanHeader } from "./features/plans/PlanViews";
 import PlanForm from "./features/plans/PlanForm";
@@ -40,7 +48,8 @@ import type {
   Review,
   Execution,
 } from "./shared/domain";
-type View = "today" | "plans" | "review";
+type View =
+  "today" | "plans" | "review" | "experiment" | "migration" | "account";
 type Dialog = {
   kind:
     | "plan"
@@ -56,11 +65,11 @@ type Dialog = {
   execution?: Execution;
   review?: Review;
 } | null;
-export default function Diary() {
+export default function Diary({ user }: { user: Identity }) {
   const [state, setState] = useState<DiaryState>(emptyState),
     [loading, setLoading] = useState(true),
     [busy, setBusy] = useState(false),
-    [exporting, setExporting] = useState(false);
+    [exporting] = useState(false);
   const [view, setView] = useState<View>("today"),
     [filters, setFilters] = useState<Filters>(defaultFilters),
     [metric, setMetric] = useState(""),
@@ -72,6 +81,14 @@ export default function Diary() {
     [error, setError] = useState(""),
     [undo, setUndo] = useState<Task | null>(null),
     [copied, setCopied] = useState(false);
+  useEffect(() => {
+    const restore = () => {
+      setError("");
+      setMessage("다시 로그인했어요. 입력을 확인하고 저장해 주세요.");
+    };
+    window.addEventListener("pds-session-restored", restore);
+    return () => window.removeEventListener("pds-session-restored", restore);
+  }, []);
   const busyRef = useRef(false),
     failed = useRef<{ action: string; data: Record<string, unknown> } | null>(
       null,
@@ -106,7 +123,13 @@ export default function Diary() {
     function sync() {
       const q = new URLSearchParams(window.location.search);
       const v = q.get("view");
-      setView(v === "plans" || v === "review" ? v : "today");
+      setView(
+        ["plans", "review", "experiment", "migration", "account"].includes(
+          v || "",
+        )
+          ? (v as View)
+          : "today",
+      );
       setFilters(
         Object.fromEntries(
           Object.entries(defaultFilters).map(([k, v]) => [k, q.get(k) || v]),
@@ -263,26 +286,18 @@ export default function Diary() {
     onRecord: (t, e) => setDialog({ kind: "execution", task: t, execution: e }),
     onDetail: (t) => setDialog({ kind: "detail", task: t }),
   };
-  async function exportAll() {
-    setExporting(true);
-    setError("");
-    try {
-      const response = await fetch("/api/export", { cache: "no-store" });
-      if (!response.ok)
-        throw new Error("내보내기에 실패했습니다. 다시 시도해 주세요.");
-      const blob = await response.blob(),
-        url = URL.createObjectURL(blob),
-        a = document.createElement("a");
-      a.href = url;
-      a.download = `pds-diary-${state.today}.json`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setMessage("전체 자료를 파일 하나로 내보냈어요");
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setExporting(false);
-    }
+  async function logout() {
+    await request("/api/auth/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    });
+    announceAuth("logout");
+    setState(emptyState);
+    setDialog(null);
+    failed.current = null;
+    requests.current.clear();
+    window.location.replace("/login");
   }
   const selectedPlan = state.plans.find((p) => p.id === filters.plan),
     all = scopeTasks(state),
@@ -320,6 +335,24 @@ export default function Diary() {
       label: "돌아보기",
       subtitle: "다음을 위한 발견",
       icon: BarChart3,
+    },
+    {
+      key: "experiment" as View,
+      label: "5일 실험",
+      subtitle: "하나를 바꾸고 관찰하기",
+      icon: FlaskConical,
+    },
+    {
+      key: "migration" as View,
+      label: "기록 이어오기",
+      subtitle: "과제6 자료를 내 계정으로",
+      icon: Upload,
+    },
+    {
+      key: "account" as View,
+      label: "계정과 자료",
+      subtitle: "내보내기와 안전한 관리",
+      icon: Settings,
     },
   ];
   return (
@@ -409,7 +442,7 @@ export default function Diary() {
               <BookOpen size={19} />
             </span>
             <div>
-              <strong>나의 다이어리</strong>
+              <strong>{user.name}의 다이어리</strong>
               <small>완료한 한 걸음 {complete}개</small>
             </div>
             <span className="profile-dot" />
@@ -452,7 +485,7 @@ export default function Diary() {
             <button
               className="button secondary small"
               disabled={loading || exporting}
-              onClick={() => void exportAll()}
+              onClick={() => navigate("account")}
               aria-label="전체 자료 내보내기"
             >
               {exporting && <LoaderCircle size={15} className="spin" />}
@@ -464,10 +497,10 @@ export default function Diary() {
           <div className="public-notice">
             <ShieldCheck size={17} />
             <p>
-              지금은 로그인이 없어 링크를 아는 사람은 누구나 볼 수 있습니다.
-              남이 봐도 괜찮은 내용만 넣으세요
+              로그인한 내 계정의 기록만 표시합니다. 기록은 서버에 안전하게
+              보관하고, 기기를 떠날 때는 로그아웃하세요.
             </p>
-            <span>공개 다이어리</span>
+            <span>나만의 다이어리</span>
           </div>
           {error && (
             <div className="error-banner" role="alert">
@@ -521,6 +554,12 @@ export default function Diary() {
               <LoaderCircle className="spin" size={27} />
               <p>다이어리를 펼치고 있어요…</p>
             </div>
+          ) : view === "experiment" ? (
+            <ExperimentView />
+          ) : view === "migration" ? (
+            <MigrationView email={user.email} onDone={refresh} />
+          ) : view === "account" ? (
+            <AccountView user={user} onLogout={logout} />
           ) : view === "today" ? (
             <TodayView
               state={state}

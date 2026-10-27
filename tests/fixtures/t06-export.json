@@ -1,0 +1,57 @@
+{
+  "version": "pds-schema-v2",
+  "timezone": "Asia/Seoul",
+  "duration_unit": "minute",
+  "exported_at": "2026-10-27T03:00:00.000Z",
+  "today": "2026-10-27",
+  "plans": [
+    {
+      "id": "fixture-plan",
+      "title": "검증용 계획",
+      "start_date": "2026-10-27",
+      "end_date": "2026-10-31",
+      "priority": "medium",
+      "success_criteria": "검증 완료",
+      "estimated_minutes": 60,
+      "version": 1,
+      "created_at": "2026-10-27T03:00:00.000Z",
+      "updated_at": "2026-10-27T03:00:00.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "id": "fixture-plan",
+      "title": "검증용 계획",
+      "start_date": "2026-10-27",
+      "end_date": "2026-10-31",
+      "priority": "medium",
+      "success_criteria": "검증 완료",
+      "estimated_minutes": 60,
+      "version": 1,
+      "created_at": "2026-10-27T03:00:00.000Z",
+      "updated_at": "2026-10-27T03:00:00.000Z",
+      "revision_id": "fixture-revision",
+      "plan_id": "fixture-plan"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "fixture-task",
+      "plan_id": "fixture-plan",
+      "title": "검증용 할 일",
+      "due_date": "2026-10-27",
+      "priority": "medium",
+      "tags": ["검증"],
+      "estimated_minutes": 30,
+      "status": "todo",
+      "completion_cycle": 0,
+      "deleted_at": null,
+      "created_at": "2026-10-27T03:00:00.000Z",
+      "updated_at": "2026-10-27T03:00:00.000Z"
+    }
+  ],
+  "executions": [],
+  "timers": [],
+  "reviews": [],
+  "completions": []
+}

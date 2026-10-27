@@ -25,9 +25,9 @@ const schema = Object.fromEntries(
     },
   ]),
 );
-const path = "contracts/pds-schema-v2.json";
+const path = "contracts/pds-schema-v3.json";
 const rules = {
-  version: "pds-schema-v2",
+  version: "pds-schema-v3",
   database: "Cloudflare D1 / SQLite",
   schema_source: "db/schema.ts",
   migration_directory: "drizzle",

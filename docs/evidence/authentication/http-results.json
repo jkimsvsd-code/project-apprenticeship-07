@@ -1,0 +1,2235 @@
+{
+  "executed_at": "2026-10-27T07:47:44.245Z",
+  "environment": "local Cloudflare Worker and D1; disposable QA accounts",
+  "actual_five_day_use": false,
+  "source_state": {
+    "baseline_commit": "53ee04f3d3865e89fde664f56bca93d614057560",
+    "description": "Local working tree; hashes identify the actual implementation tested",
+    "file_sha256": {
+      "src/server/store.ts": "160f45ad12557bb487ce0062dbbad3cd71cc9230fbb4d8e41bc51a73c7685edd",
+      "src/server/access-control/index.ts": "9e864d159848059799886c2148ed05284a14cebb31ebc2d7f65080a4669831a4",
+      "src/server/auth/config.ts": "f205be1d9c6512d7f48d5cf268c734d82a0523c60240313aa5ba90884e9dd840",
+      "src/server/runtime.ts": "7e99488cd5ac01a4df2a0424187a61ae9580c5c2f624e770c10ca4b9d562d837",
+      "src/server/accounts/index.ts": "feeef2a66adc281310227e55319a83b823f7891a4c55971187f88304be87f324",
+      "src/server/migration/index.ts": "441b9a3b0ac1768dc69dc5e35cc52d58b57122b5ce95713dafb92127ff90808b",
+      "src/server/experiment/index.ts": "1bb2d34f05b15810d61c27d042104db607262f381c92cf2ae78d80688db61f19",
+      "package-lock.json": "7b3796cc5ee627b94cb9e7b7bd7793f0adfa709b0224896473b2eaae2d37b6e2"
+    }
+  },
+  "passed": true,
+  "records": [
+    {
+      "label": "public login page",
+      "request": {
+        "method": "GET",
+        "path": "/login",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "location": null,
+          "html": true
+        }
+      }
+    },
+    {
+      "label": "private screen redirects",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {}
+      },
+      "response": {
+        "status": 307,
+        "body": {
+          "location": "/login?next=%2F",
+          "html": false
+        }
+      }
+    },
+    {
+      "label": "anonymous direct API denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {}
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "A signup",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/signup",
+        "headers": {
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "name": "QA A",
+          "email": "qa-1793087263152-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "label": "A session",
+      "request": {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "user": {
+            "id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG",
+            "email": "qa-1793087263152-a@example.test",
+            "name": "QA A"
+          },
+          "expiresAt": "2026-11-03T07:47:43.308Z"
+        }
+      }
+    },
+    {
+      "label": "B signup",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/signup",
+        "headers": {
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "name": "QA B",
+          "email": "qa-1793087263152-b@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "label": "B session",
+      "request": {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "user": {
+            "id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM",
+            "email": "qa-1793087263152-b@example.test",
+            "name": "QA B"
+          },
+          "expiresAt": "2026-11-03T07:47:43.377Z"
+        }
+      }
+    },
+    {
+      "label": "duplicate signup denied",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/signup",
+        "headers": {
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "name": "A",
+          "email": "qa-1793087263152-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 422,
+        "body": {
+          "error": "가입할 수 없습니다. 입력 정보나 기존 계정을 확인해 주세요."
+        }
+      }
+    },
+    {
+      "label": "existing user wrong password",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "email": "qa-1793087263152-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "이메일 또는 비밀번호가 올바르지 않습니다."
+        }
+      }
+    },
+    {
+      "label": "missing user same message",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "email": "missing-1793087263152@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "이메일 또는 비밀번호가 올바르지 않습니다."
+        }
+      }
+    },
+    {
+      "label": "A plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "검증용 계획",
+            "start_date": "2026-10-01",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "검증 완료",
+            "estimated_minutes": 60
+          },
+          "requestId": "same-key-across-users"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810"
+        }
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+            "title": "A task",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "0be624b1-ef4a-4dee-8f43-cc1597dc1378"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+        }
+      }
+    },
+    {
+      "label": "B plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "검증용 계획",
+            "start_date": "2026-10-01",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "검증 완료",
+            "estimated_minutes": 60
+          },
+          "requestId": "same-key-across-users"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094"
+        }
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+            "title": "B task",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "ac86efb9-7b00-418b-892e-7b75031edd2f"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+        }
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+            "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+            "title": "A own updated",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "6c2810d3-e5a3-4802-b972-aaed4815fc17"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+        }
+      }
+    },
+    {
+      "label": "B before denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "6321fd2f-6f45-4639-96c1-d736a9ae6750",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "B task",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.546Z",
+              "updated_at": "2026-10-27T07:47:43.546Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "A own read success",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=d030df16-a09a-430f-9add-ece7e6fb2ed7",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+          "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+          "title": "A own updated",
+          "due_date": "2026-10-27",
+          "priority": "medium",
+          "tags": "[]",
+          "estimated_minutes": 30,
+          "status": "todo",
+          "completion_cycle": 0,
+          "deleted_at": null,
+          "created_at": "2026-10-27T07:47:43.530Z",
+          "updated_at": "2026-10-27T07:47:43.556Z"
+        }
+      }
+    },
+    {
+      "label": "A cannot read B",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+            "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+            "title": "tamper",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "69c5d9a1-697d-4eec-9f0e-bb86ed94fc0d"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "A task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+          },
+          "requestId": "a49939c4-010a-47a6-afea-fe25d9de7645"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+            "title": "bad parent",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "c9630e07-d39f-4ddf-9fc2-a21c936543f5"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "A timer.start",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "timer.start",
+          "data": {
+            "task_id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+          },
+          "requestId": "0c4ff2de-a2d9-41d5-ac90-b379efe45d67"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "B after denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "6321fd2f-6f45-4639-96c1-d736a9ae6750",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "B task",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.546Z",
+              "updated_at": "2026-10-27T07:47:43.546Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "A task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+          },
+          "requestId": "bf66f5b2-3f2f-468a-b2ad-52d80adc777b"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+        }
+      }
+    },
+    {
+      "label": "A task.restore",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.restore",
+          "data": {
+            "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+          },
+          "requestId": "cb712911-56c9-47c8-8724-ccb68164f96d"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+        }
+      }
+    },
+    {
+      "label": "A URL and header owner forgery returns own only",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?owner_id=yo330mROWacs1xtMGbEMU8MvnkJD67KM",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "x-user-id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM",
+          "oai-authenticated-user-id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "4e865537-2358-4e6d-93e4-c2b747be55e8",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "A own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.530Z",
+              "updated_at": "2026-10-27T07:47:43.635Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "A plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "검증용 계획",
+            "start_date": "2026-10-01",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "검증 완료",
+            "estimated_minutes": 60,
+            "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM",
+            "user_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+          },
+          "requestId": "95722e2e-107a-4e36-9f1a-2af7d85985cd"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b"
+        }
+      }
+    },
+    {
+      "label": "body owner ignored",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=plans&id=ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+          "title": "검증용 계획",
+          "start_date": "2026-10-01",
+          "end_date": "2026-10-31",
+          "priority": "medium",
+          "success_criteria": "검증 완료",
+          "estimated_minutes": 60,
+          "version": 1,
+          "created_at": "2026-10-27T07:47:43.651Z",
+          "updated_at": "2026-10-27T07:47:43.651Z",
+          "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+        }
+      }
+    },
+    {
+      "label": "A own export",
+      "request": {
+        "method": "GET",
+        "path": "/api/export",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "version": "pds-schema-v3",
+          "exported_at": "2026-10-27T07:47:43.668Z",
+          "timezone": "Asia/Seoul",
+          "duration_unit": "minute",
+          "plans": [
+            {
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            },
+            {
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "4e865537-2358-4e6d-93e4-c2b747be55e8",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810"
+            },
+            {
+              "revision_id": "000142ec-fd1e-4e21-9e13-b80a71f58952",
+              "plan_id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "A own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.530Z",
+              "updated_at": "2026-10-27T07:47:43.635Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27",
+          "completions": [],
+          "profile": {
+            "id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG",
+            "name": "QA A",
+            "email": "qa-1793087263152-a@example.test"
+          },
+          "experiments": [],
+          "experiment_days": [],
+          "rule_changes": [],
+          "imports": []
+        }
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+            "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+            "title": "B own updated",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "58bb23ed-9f5a-4846-b853-20f470813653"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+        }
+      }
+    },
+    {
+      "label": "A before denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            },
+            {
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "4e865537-2358-4e6d-93e4-c2b747be55e8",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810"
+            },
+            {
+              "revision_id": "000142ec-fd1e-4e21-9e13-b80a71f58952",
+              "plan_id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "A own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.530Z",
+              "updated_at": "2026-10-27T07:47:43.635Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "B own read success",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+          "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+          "title": "B own updated",
+          "due_date": "2026-10-27",
+          "priority": "medium",
+          "tags": "[]",
+          "estimated_minutes": 30,
+          "status": "todo",
+          "completion_cycle": 0,
+          "deleted_at": null,
+          "created_at": "2026-10-27T07:47:43.546Z",
+          "updated_at": "2026-10-27T07:47:43.677Z"
+        }
+      }
+    },
+    {
+      "label": "B cannot read A",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=d030df16-a09a-430f-9add-ece7e6fb2ed7",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+            "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+            "title": "tamper",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "3387fb18-ba34-4eda-8437-b6190391d612"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "B task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+          },
+          "requestId": "26dd9af5-0c75-4b8c-9d81-c5766a66ec4d"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+            "title": "bad parent",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "c9df5be0-0506-4160-a1f3-8815d8ff2a6e"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "B timer.start",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "timer.start",
+          "data": {
+            "task_id": "d030df16-a09a-430f-9add-ece7e6fb2ed7"
+          },
+          "requestId": "22776ace-4265-4127-9803-7b2b9c6d848d"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "A after denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            },
+            {
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "4e865537-2358-4e6d-93e4-c2b747be55e8",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810"
+            },
+            {
+              "revision_id": "000142ec-fd1e-4e21-9e13-b80a71f58952",
+              "plan_id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "A own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.530Z",
+              "updated_at": "2026-10-27T07:47:43.635Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "B task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+          },
+          "requestId": "24031e62-0296-4a77-812d-fa79781039be"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+        }
+      }
+    },
+    {
+      "label": "B task.restore",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "task.restore",
+          "data": {
+            "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+          },
+          "requestId": "a5b11387-6443-4ab8-8187-dc991b1502b6"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55"
+        }
+      }
+    },
+    {
+      "label": "B URL and header owner forgery returns own only",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?owner_id=7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "x-user-id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG",
+          "oai-authenticated-user-id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "6321fd2f-6f45-4639-96c1-d736a9ae6750",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "B own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.546Z",
+              "updated_at": "2026-10-27T07:47:43.757Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "B plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "검증용 계획",
+            "start_date": "2026-10-01",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "검증 완료",
+            "estimated_minutes": 60,
+            "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG",
+            "user_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+          },
+          "requestId": "e372beaf-1282-4ee9-9043-638d5b24e955"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e"
+        }
+      }
+    },
+    {
+      "label": "body owner ignored",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=plans&id=af8b6f6f-da4f-4404-911e-42110f9bc06e",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e",
+          "title": "검증용 계획",
+          "start_date": "2026-10-01",
+          "end_date": "2026-10-31",
+          "priority": "medium",
+          "success_criteria": "검증 완료",
+          "estimated_minutes": 60,
+          "version": 1,
+          "created_at": "2026-10-27T07:47:43.773Z",
+          "updated_at": "2026-10-27T07:47:43.773Z",
+          "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+        }
+      }
+    },
+    {
+      "label": "B own export",
+      "request": {
+        "method": "GET",
+        "path": "/api/export",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "version": "pds-schema-v3",
+          "exported_at": "2026-10-27T07:47:43.789Z",
+          "timezone": "Asia/Seoul",
+          "duration_unit": "minute",
+          "plans": [
+            {
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            },
+            {
+              "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.773Z",
+              "updated_at": "2026-10-27T07:47:43.773Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "6321fd2f-6f45-4639-96c1-d736a9ae6750",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094"
+            },
+            {
+              "revision_id": "67fa681a-5997-4d7b-bc26-48fadcb796af",
+              "plan_id": "af8b6f6f-da4f-4404-911e-42110f9bc06e",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.773Z",
+              "updated_at": "2026-10-27T07:47:43.773Z",
+              "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "B own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.546Z",
+              "updated_at": "2026-10-27T07:47:43.757Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27",
+          "completions": [],
+          "profile": {
+            "id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM",
+            "name": "QA B",
+            "email": "qa-1793087263152-b@example.test"
+          },
+          "experiments": [],
+          "experiment_days": [],
+          "rule_changes": [],
+          "imports": []
+        }
+      }
+    },
+    {
+      "label": "anonymous spoofed identity rejected",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "oai-authenticated-user-id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG",
+          "x-user-id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "cross-origin request denied",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "https://other.example.test"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "검증용 계획",
+            "start_date": "2026-10-01",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "검증 완료",
+            "estimated_minutes": 60
+          },
+          "requestId": "f4f4af75-c824-4629-9fba-44aa5f042177"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "location": null,
+          "html": false
+        }
+      }
+    },
+    {
+      "label": "same password uses different stored scrypt hashes; disposable accounts deleted after QA",
+      "algorithm": "scrypt",
+      "parameters": {
+        "N": 16384,
+        "r": 16,
+        "p": 1,
+        "dkLen": 64
+      },
+      "stored_hashes": [
+        "37b40930…:7fcf5c686f37…",
+        "70d59414…:d63685357b01…"
+      ],
+      "stored_hashes_redacted": true,
+      "storage_format": "32 hex salt characters : 128 hex derived-key characters",
+      "different": true
+    },
+    {
+      "label": "same GET before logout",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            },
+            {
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "4e865537-2358-4e6d-93e4-c2b747be55e8",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810"
+            },
+            {
+              "revision_id": "000142ec-fd1e-4e21-9e13-b80a71f58952",
+              "plan_id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "A own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.530Z",
+              "updated_at": "2026-10-27T07:47:43.635Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "logout",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {}
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "label": "same GET after logout, same old cookie",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "login again",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "email": "qa-1793087263152-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "label": "change password revokes old sessions",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/password",
+        "headers": {
+          "Cookie": "[cookie-ref-3 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "currentPassword": "[REDACTED]",
+          "newPassword": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "label": "old cookie after password change denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-3 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "replacement cookie works",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-4 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            },
+            {
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "owner_id": "7lteSmit6CAwyuJpO8asIOVMN8wQ9QVG"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "4e865537-2358-4e6d-93e4-c2b747be55e8",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.520Z",
+              "updated_at": "2026-10-27T07:47:43.520Z",
+              "id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810"
+            },
+            {
+              "revision_id": "000142ec-fd1e-4e21-9e13-b80a71f58952",
+              "plan_id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.651Z",
+              "updated_at": "2026-10-27T07:47:43.651Z",
+              "id": "ce0bbc4c-dff9-4f5c-8cd5-955f2042b98b"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "d030df16-a09a-430f-9add-ece7e6fb2ed7",
+              "plan_id": "5210caf0-4f84-4e6d-bf46-8a87f39c0810",
+              "title": "A own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.530Z",
+              "updated_at": "2026-10-27T07:47:43.635Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "expired cookie denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-4 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "login after expiry",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "email": "qa-1793087263152-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "label": "B before A deletion",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            },
+            {
+              "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.773Z",
+              "updated_at": "2026-10-27T07:47:43.773Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "6321fd2f-6f45-4639-96c1-d736a9ae6750",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094"
+            },
+            {
+              "revision_id": "67fa681a-5997-4d7b-bc26-48fadcb796af",
+              "plan_id": "af8b6f6f-da4f-4404-911e-42110f9bc06e",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.773Z",
+              "updated_at": "2026-10-27T07:47:43.773Z",
+              "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "B own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.546Z",
+              "updated_at": "2026-10-27T07:47:43.757Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    },
+    {
+      "label": "wrong-password deletion denied",
+      "request": {
+        "method": "DELETE",
+        "path": "/api/account",
+        "headers": {
+          "Cookie": "[cookie-ref-5 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "password": "[REDACTED]",
+          "confirm": "내 계정 삭제"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "error": "비밀번호가 올바르지 않습니다.",
+          "field": "password"
+        }
+      }
+    },
+    {
+      "label": "A account and data deleted",
+      "request": {
+        "method": "DELETE",
+        "path": "/api/account",
+        "headers": {
+          "Cookie": "[cookie-ref-5 REDACTED]",
+          "Content-Type": "application/json",
+          "Origin": "http://127.0.0.1:5173"
+        },
+        "body": {
+          "password": "[REDACTED]",
+          "confirm": "내 계정 삭제"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "label": "deleted account session denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-5 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        }
+      }
+    },
+    {
+      "label": "B unchanged after A deletion",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            },
+            {
+              "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e",
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T07:47:43.773Z",
+              "updated_at": "2026-10-27T07:47:43.773Z",
+              "owner_id": "yo330mROWacs1xtMGbEMU8MvnkJD67KM"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "6321fd2f-6f45-4639-96c1-d736a9ae6750",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.539Z",
+              "updated_at": "2026-10-27T07:47:43.539Z",
+              "id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094"
+            },
+            {
+              "revision_id": "67fa681a-5997-4d7b-bc26-48fadcb796af",
+              "plan_id": "af8b6f6f-da4f-4404-911e-42110f9bc06e",
+              "version": 1,
+              "title": "검증용 계획",
+              "start_date": "2026-10-01",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "검증 완료",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T07:47:43.773Z",
+              "updated_at": "2026-10-27T07:47:43.773Z",
+              "id": "af8b6f6f-da4f-4404-911e-42110f9bc06e"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "21a6c5bc-db90-4d56-9f46-ca9c57192e55",
+              "plan_id": "531daf0e-5b2d-40fd-82b7-3e75b3d6f094",
+              "title": "B own updated",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T07:47:43.546Z",
+              "updated_at": "2026-10-27T07:47:43.757Z"
+            }
+          ],
+          "executions": [],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        }
+      }
+    }
+  ]
+}

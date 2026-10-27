@@ -1,3 +1,5 @@
+> 과제6 기준 커밋 `53ee04f3d3865e89fde664f56bca93d614057560`의 보존 문서입니다. 과제7의 구현·검증 결과를 의미하지 않습니다. 상대 링크는 현재 보존 위치에 맞게 조정했습니다.
+
 # 실제 회고와 다음 계획 작성하기
 
 [공개 앱의 돌아보기](https://pds-diary-apprenticeship-06-m2021.happybay512.chatgpt.site/?view=review)를 엽니다.

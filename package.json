@@ -1,5 +1,5 @@
 {
-  "name": "pds-diary",
+  "name": "pds-diary-apprenticeship-07",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -17,12 +17,15 @@
     "db:migrate": "node scripts/migrate-local.mjs",
     "db:check": "node scripts/schema-contract.mjs",
     "test:http": "node tests/integration/http-flow.mjs",
-    "format": "prettier --write app src db/schema.ts tests scripts/test.mjs scripts/migrate-local.mjs scripts/schema-contract.mjs"
+    "format": "prettier --write app src db/schema.ts tests scripts/test.mjs scripts/migrate-local.mjs scripts/schema-contract.mjs",
+    "setup:local": "node scripts/setup-local.mjs",
+    "test:http:auth": "node tests/integration/http-auth.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
     "@hookform/resolvers": "^5.7.1",
     "@shadcn/react": "^0.3.0",
+    "better-auth": "1.7.14",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "^1.1.1",

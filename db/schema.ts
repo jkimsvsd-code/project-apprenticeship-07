@@ -7,6 +7,9 @@ import {
   check,
 } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
+export * from "./auth-schema";
+export * from "./experiment-schema";
+
 const dates = () => ({
   created_at: text().notNull(),
   updated_at: text().notNull(),
@@ -15,6 +18,7 @@ export const plans = sqliteTable(
   "plans",
   {
     id: text().primaryKey(),
+    owner_id: text().notNull().default("__legacy_unclaimed__"),
     title: text().notNull(),
     start_date: text().notNull(),
     end_date: text().notNull(),
@@ -126,6 +130,7 @@ export const reviews = sqliteTable(
 );
 export const commands = sqliteTable("commands", {
   id: text().primaryKey(),
+  owner_id: text().notNull().default("__legacy_unclaimed__"),
   fingerprint: text().notNull(),
   result_id: text().notNull(),
   created_at: text().notNull(),

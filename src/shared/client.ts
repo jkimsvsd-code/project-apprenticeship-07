@@ -3,6 +3,7 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public field = "",
+    public status = 0,
   ) {
     super(message);
   }
@@ -28,10 +29,13 @@ export async function request<T>(
     );
   }
   if (!response.ok) {
+    if (response.status === 401 && typeof window !== "undefined")
+      window.dispatchEvent(new Event("pds-session-expired"));
     const error = result as { error?: string; field?: string };
     throw new ApiError(
       error.error || "요청을 처리하지 못했습니다.",
       error.field || "",
+      response.status,
     );
   }
   return result as T;

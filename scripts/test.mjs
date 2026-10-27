@@ -3,14 +3,18 @@ import { readFileSync, mkdirSync, writeFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { spawnSync } from "node:child_process";
 const out = ".sites-runtime/tests";
+function walk(dir) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
+    entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)],
+  );
+}
 const files = [
-  "src/server/store.ts",
-  "src/shared/domain.ts",
-  ...["tests/unit", "tests/integration"].flatMap((dir) =>
-    readdirSync(dir)
-      .filter((f) => f.endsWith(".test.ts"))
-      .map((f) => join(dir, f)),
+  ...walk("src/server").filter(
+    (f) => f.endsWith(".ts") && !f.endsWith("runtime.ts"),
   ),
+  ...walk("src/shared").filter((f) => f.endsWith(".ts")),
+  ...walk("db").filter((f) => f.endsWith(".ts") && !f.endsWith("index.ts")),
+  ...walk("tests").filter((f) => f.endsWith(".ts")),
 ];
 for (const file of files) {
   const target = join(out, file.replace(/\.ts$/, ".js"));

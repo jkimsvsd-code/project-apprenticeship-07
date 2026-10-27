@@ -1,0 +1,36 @@
+{
+  "version": "pds-auth-v1",
+  "library": "better-auth@1.7.14",
+  "password": {
+    "algorithm": "scrypt",
+    "N": 16384,
+    "r": 16,
+    "p": 1,
+    "dkLen": 64,
+    "random_salt_bytes": 16,
+    "min_length": 12,
+    "max_length": 128
+  },
+  "session": {
+    "storage": "D1 auth_sessions",
+    "expires_seconds": 604800,
+    "refresh": false,
+    "cookie_cache": false,
+    "http_only": true,
+    "same_site": "lax",
+    "secure_in_https": true
+  },
+  "revocation": [
+    "logout deletes current DB session",
+    "password change revokes all previous sessions and issues replacement",
+    "account deletion revokes all sessions"
+  ],
+  "owner_source": "validated Better Auth database session only; ignore client owner hints",
+  "denial": {
+    "unauthenticated_api": 401,
+    "cross_account_record": 404,
+    "cross_origin_write": 403
+  },
+  "public_auth_json": "ok status only; never return library tokens",
+  "legacy_data": "unclaimed rows remain hidden until explicitly migrated into a verified account"
+}

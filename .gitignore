@@ -6,6 +6,11 @@
 *.pem
 *.key
 .aws/
+.envrc
+*.p12
+*.pfx
+
+# Hosting identity is public metadata; runtime secrets stay in .dev.vars
 
 # Dependencies and generated output
 node_modules/
@@ -23,10 +28,17 @@ playwright-report/
 /exports/
 /backups/
 /tmp/
+/.local/
 *.sqlite
 *.sqlite3
 *.db
 *.dump
+*.db-*
+*.sqlite-*
+*.sqlite3-*
+*.har
+*.pcap
+*.pcapng
 
 # Machine-specific files
 .DS_Store
