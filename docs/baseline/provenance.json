@@ -23,11 +23,13 @@
   "prepared_on": "2026-10-27",
   "timezone": "Asia/Seoul",
   "implementation_status": "deployed_and_production_auth_ownership_verified",
-  "remote_repository": null,
+  "remote_repository": "https://github.com/jkimsvsd-code/project-apprenticeship-07",
   "deployment_url": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
   "expected_deployment_url": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
   "sites_project_id": "appgprj_6ae04fa3de4881918051ae92b695d273",
   "runtime_verified_commit": "590e291e078840891d854c05f6657b00a45aa871",
   "production_verification_records": 73,
-  "sites_source_synced": true
+  "sites_source_synced": true,
+  "github_visibility": "public",
+  "github_branch": "main"
 }

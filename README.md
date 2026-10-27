@@ -5,6 +5,7 @@
 **필수 기능과 UX A1~A7을 구현했습니다.** 과제6의 계획·할 일·실행·타이머·회고·다음 계획 연결을 계승했습니다. 실제 5일 사용은 사용자가 직접 진행해야 하며 자동 테스트나 예전 기록으로 대신하지 않았습니다.
 
 - 로컬 앱: 실행 후 `http://127.0.0.1:5173`
+- [GitHub 소스](https://github.com/jkimsvsd-code/project-apprenticeship-07)
 - [과제7 앱 열기](https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site) · [배포 및 운영 검증](docs/deployment.md)
 - [검증 결과](docs/evidence/verification-results.md) · [직접 진행할 5일 사용 절차](docs/five-day-guide.md)
 - [인증 구현 설명서](docs/authentication.md) · [승인 범위](docs/scope.md) · [요구사항 대응표](docs/requirements.md)
@@ -69,7 +70,7 @@ npm run test:http:auth
 - 과제6 기준 커밋 `53ee04f3d3865e89fde664f56bca93d614057560`과 조상 이력을 보존했습니다. 과제6 문서·증거는 `docs/baseline/t06`에 있습니다.
 - `.openai/hosting.json`에는 과제7의 공개 가능한 Site ID와 바인딩만 둡니다. 실제 키는 로컬 `.dev.vars`와 호스팅 환경에만 보관합니다.
 - `.env`, DB·덤프·내보내기·원시 캡처·개인 백업·원본 과제 PDF는 커밋하지 않습니다.
-- 과제7용 GitHub public 저장소는 아직 연결되지 않았습니다. 연결할 때 기존 Git 이력을 초기화하거나 squash하지 않습니다.
+- [GitHub public 소스](https://github.com/jkimsvsd-code/project-apprenticeship-07): 과제6 Git 이력을 그대로 유지합니다. 개인 백업·비밀값·전체 비밀번호 해시는 포함하지 않습니다.
 - 이메일 확인·비밀번호 찾기·MFA·분산 무차별 대입 방어 등 남은 한계는 [설명서 ⑥](docs/authentication.md)에 명시했습니다.
 - 라이선스는 미선택입니다.
 
