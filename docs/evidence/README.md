@@ -1,6 +1,6 @@
 # 과제7 공개 증거
 
-[검증 결과](verification-results.md)와 authentication/http-results.json에 로컬 실제 Worker·D1의 마스킹한 요청/응답 61건을 보관했습니다. authentication/login-screen.png는 비밀값 없는 로그인 화면이고, experiment/browser-experiment.png는 폐기용 계정의 UI 검증 화면입니다. 실제 5일 사용 증거는 아직 없으며 사용자가 직접 기록한 뒤 추가합니다. 빈 폴더의 .gitkeep은 통과 증거가 아닙니다.
+[검증 결과](verification-results.md)와 authentication/http-results.json에 로컬 실제 Worker·D1의 마스킹한 요청/응답 61건, authentication/deployment-http-results.json에 운영 검증 73건을 보관했습니다. authentication/deployed-login.png와 deployed-signup.png는 운영의 비어 있는 인증 화면입니다. authentication/login-screen.png는 비밀값 없는 로그인 화면이고, experiment/browser-experiment.png는 폐기용 계정의 UI 검증 화면입니다. 실제 5일 사용 증거는 아직 없으며 사용자가 직접 기록한 뒤 추가합니다. 빈 폴더의 .gitkeep은 통과 증거가 아닙니다.
 
 | 폴더 | 보관할 검토 완료 증거 |
 | --- | --- |

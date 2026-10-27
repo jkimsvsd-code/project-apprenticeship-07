@@ -1,0 +1,2638 @@
+{
+  "executed_at": "2026-10-27T08:08:49.428Z",
+  "environment": "production Cloudflare Worker + D1",
+  "origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+  "source_commit": "590e291e078840891d854c05f6657b00a45aa871",
+  "actual_five_day_use": false,
+  "passed": true,
+  "qa_accounts_deleted": true,
+  "records": [
+    {
+      "label": "anonymous login page",
+      "request": {
+        "method": "GET",
+        "path": "/login",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "html": true,
+          "location": null,
+          "loginHeading": true
+        },
+        "cache_control": "no-store, must-revalidate"
+      }
+    },
+    {
+      "label": "anonymous first screen redirects to login",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {}
+      },
+      "response": {
+        "status": 307,
+        "body": {
+          "html": false,
+          "location": "/login?next=%2F",
+          "loginHeading": false
+        },
+        "cache_control": null
+      }
+    },
+    {
+      "label": "anonymous protected API denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {}
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "anonymous protected API denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/export",
+        "headers": {}
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "anonymous protected API denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/experiment",
+        "headers": {}
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "anonymous protected API denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "headers": {}
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A signup",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/signup",
+        "headers": {
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "name": "Deployment QA 1793088507976 A",
+          "email": "qa-deploy-1793088507976-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A cookie attributes only; value excluded",
+      "cookie_attributes": [
+        " Max-Age=604800; Path=/; HttpOnly; Secure; SameSite=Lax",
+        " HttpOnly; SameSite=None; Secure; Path=/; Domain=chatgpt.site; Expires=Tue, 27 Oct 2026 08:38:33 GMT"
+      ]
+    },
+    {
+      "label": "A authenticated session",
+      "request": {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "user": {
+            "id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz",
+            "email": "qa-deploy-1793088507976-a@example.test",
+            "name": "Deployment QA 1793088507976 A"
+          },
+          "expiresAt": "2026-11-03T08:08:33.262Z"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A own private page",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "html": true,
+          "location": null,
+          "loginHeading": false
+        },
+        "cache_control": "no-store, must-revalidate"
+      }
+    },
+    {
+      "label": "B signup",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/signup",
+        "headers": {
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "name": "Deployment QA 1793088507976 B",
+          "email": "qa-deploy-1793088507976-b@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B cookie attributes only; value excluded",
+      "cookie_attributes": [
+        " Max-Age=604800; Path=/; HttpOnly; Secure; SameSite=Lax",
+        " HttpOnly; SameSite=None; Secure; Path=/; Domain=chatgpt.site; Expires=Tue, 27 Oct 2026 08:38:34 GMT"
+      ]
+    },
+    {
+      "label": "B authenticated session",
+      "request": {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "user": {
+            "id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC",
+            "email": "qa-deploy-1793088507976-b@example.test",
+            "name": "Deployment QA 1793088507976 B"
+          },
+          "expiresAt": "2026-11-03T08:08:33.987Z"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B own private page",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "html": true,
+          "location": null,
+          "loginHeading": false
+        },
+        "cache_control": "no-store, must-revalidate"
+      }
+    },
+    {
+      "label": "B HTML does not contain A identity",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "html": true,
+          "location": null,
+          "loginHeading": false
+        },
+        "cache_control": "no-store, must-revalidate"
+      }
+    },
+    {
+      "label": "anonymous page still redirects after authenticated requests",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "headers": {}
+      },
+      "response": {
+        "status": 307,
+        "body": {
+          "html": false,
+          "location": "/login?next=%2F",
+          "loginHeading": false
+        },
+        "cache_control": null
+      }
+    },
+    {
+      "label": "duplicate signup refused",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/signup",
+        "headers": {
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "name": "Duplicate",
+          "email": "qa-deploy-1793088507976-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 422,
+        "body": {
+          "error": "가입할 수 없습니다. 입력 정보나 기존 계정을 확인해 주세요."
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "existing email wrong password",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "email": "qa-deploy-1793088507976-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "이메일 또는 비밀번호가 올바르지 않습니다."
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "missing email same rejection",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "email": "missing-1793088507976@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "이메일 또는 비밀번호가 올바르지 않습니다."
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "QA 1793088507976 A",
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "QA only",
+            "estimated_minutes": 60
+          },
+          "requestId": "same-deployment-request-key"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "008fd88c-a511-4a49-99e6-0d09059618d7"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+            "title": "QA task A",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "c641f4da-7c00-4f85-965a-c8248e367d06"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A execution.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "execution.save",
+          "data": {
+            "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+            "started_at": "2026-10-27T00:00:00Z",
+            "ended_at": "2026-10-27T00:10:00Z",
+            "actual_minutes": 10,
+            "blocked_reason": "Synthetic QA"
+          },
+          "requestId": "1e024dff-d4b1-4de8-a4c3-f7a93d3aaa02"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "84efe86f-7a4d-47b5-b199-22215359fd54"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "QA 1793088507976 B",
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "QA only",
+            "estimated_minutes": 60
+          },
+          "requestId": "same-deployment-request-key"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+            "title": "QA task B",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "383e4fad-df3c-4f1b-9fe9-459fec2ba094"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "b051500e-0575-43ce-b266-734a1db33d26"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B execution.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "execution.save",
+          "data": {
+            "task_id": "b051500e-0575-43ce-b266-734a1db33d26",
+            "started_at": "2026-10-27T00:00:00Z",
+            "ended_at": "2026-10-27T00:10:00Z",
+            "actual_minutes": 10,
+            "blocked_reason": "Synthetic QA"
+          },
+          "requestId": "ec89c101-160c-4b95-a728-65f47219201b"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "25ebabaa-6fde-41bc-a374-b88c72782fd8"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B state before denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "3781692e-63c1-4554-8092-2c8a3f0a9a50",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "version": 1,
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA task B",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:36.640Z",
+              "updated_at": "2026-10-27T08:08:36.640Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "25ebabaa-6fde-41bc-a374-b88c72782fd8",
+              "task_id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:36.946Z",
+              "updated_at": "2026-10-27T08:08:36.946Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A own record read",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=362d9511-3e5d-412e-a8d3-2804eb5d9915",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+          "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+          "title": "QA task A",
+          "due_date": "2026-10-27",
+          "priority": "medium",
+          "tags": "[]",
+          "estimated_minutes": 30,
+          "status": "todo",
+          "completion_cycle": 0,
+          "deleted_at": null,
+          "created_at": "2026-10-27T08:08:35.570Z",
+          "updated_at": "2026-10-27T08:08:35.570Z"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A cannot read B",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=b051500e-0575-43ce-b266-734a1db33d26",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "b051500e-0575-43ce-b266-734a1db33d26",
+            "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+            "title": "Tamper",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "bb7a6910-55b2-4dd7-8d1e-76608befd165"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "b051500e-0575-43ce-b266-734a1db33d26"
+          },
+          "requestId": "055c85b0-a4e1-4e82-b3a6-32694c39c7b7"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+            "title": "Wrong parent",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "be947926-6eeb-4156-ad62-b315263b3f13"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A timer.start",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "timer.start",
+          "data": {
+            "task_id": "b051500e-0575-43ce-b266-734a1db33d26"
+          },
+          "requestId": "ac0dfa05-f0b5-4ff8-bdc1-34505bc85bfd"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B state after denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "3781692e-63c1-4554-8092-2c8a3f0a9a50",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "version": 1,
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA task B",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:36.640Z",
+              "updated_at": "2026-10-27T08:08:36.640Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "25ebabaa-6fde-41bc-a374-b88c72782fd8",
+              "task_id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:36.946Z",
+              "updated_at": "2026-10-27T08:08:36.946Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A forged URL/header returns own list",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?owner_id=DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "x-user-id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC",
+          "oai-authenticated-user-id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "cb1f4c6a-9c84-4f79-9f9f-f8909791a694",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "version": 1,
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "QA task A",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:35.570Z",
+              "updated_at": "2026-10-27T08:08:35.570Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "84efe86f-7a4d-47b5-b199-22215359fd54",
+              "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:35.873Z",
+              "updated_at": "2026-10-27T08:08:35.873Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+            "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+            "title": "Own update A",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "daf0394d-34de-41d3-a6d0-5cbd5aa68baa"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+          },
+          "requestId": "0e0134f3-462a-43ae-93bb-c52e2ec4cb10"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A task.restore",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.restore",
+          "data": {
+            "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+          },
+          "requestId": "1931d426-3bc6-4bf8-94f6-aa1e019098c5"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "Deployment QA plan",
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "QA only",
+            "estimated_minutes": 60,
+            "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC",
+            "user_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+          },
+          "requestId": "2a0d4f0a-dee6-4588-8e7d-37c3888a95bf"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "body owner ignored",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=plans&id=eb3561f0-d983-435f-ade6-cc3450d5edd5",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+          "title": "Deployment QA plan",
+          "start_date": "2026-10-27",
+          "end_date": "2026-10-31",
+          "priority": "medium",
+          "success_criteria": "QA only",
+          "estimated_minutes": 60,
+          "version": 1,
+          "created_at": "2026-10-27T08:08:40.119Z",
+          "updated_at": "2026-10-27T08:08:40.119Z",
+          "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A private export",
+      "request": {
+        "method": "GET",
+        "path": "/api/export",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "version": "pds-schema-v3",
+          "exported_at": "2026-10-27T08:08:40.556Z",
+          "timezone": "Asia/Seoul",
+          "duration_unit": "minute",
+          "plans": [
+            {
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            },
+            {
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "cb1f4c6a-9c84-4f79-9f9f-f8909791a694",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "version": 1,
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7"
+            },
+            {
+              "revision_id": "4b0542ca-7575-4f1d-b89a-e281d0057d9a",
+              "plan_id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "Own update A",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:35.570Z",
+              "updated_at": "2026-10-27T08:08:39.834Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "84efe86f-7a4d-47b5-b199-22215359fd54",
+              "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:35.873Z",
+              "updated_at": "2026-10-27T08:08:35.873Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27",
+          "completions": [],
+          "profile": {
+            "id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz",
+            "name": "Deployment QA 1793088507976 A",
+            "email": "qa-deploy-1793088507976-a@example.test"
+          },
+          "experiments": [],
+          "experiment_days": [],
+          "rule_changes": [],
+          "imports": []
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A state before denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            },
+            {
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "cb1f4c6a-9c84-4f79-9f9f-f8909791a694",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "version": 1,
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7"
+            },
+            {
+              "revision_id": "4b0542ca-7575-4f1d-b89a-e281d0057d9a",
+              "plan_id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "Own update A",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:35.570Z",
+              "updated_at": "2026-10-27T08:08:39.834Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "84efe86f-7a4d-47b5-b199-22215359fd54",
+              "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:35.873Z",
+              "updated_at": "2026-10-27T08:08:35.873Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B own record read",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=b051500e-0575-43ce-b266-734a1db33d26",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "b051500e-0575-43ce-b266-734a1db33d26",
+          "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+          "title": "QA task B",
+          "due_date": "2026-10-27",
+          "priority": "medium",
+          "tags": "[]",
+          "estimated_minutes": 30,
+          "status": "todo",
+          "completion_cycle": 0,
+          "deleted_at": null,
+          "created_at": "2026-10-27T08:08:36.640Z",
+          "updated_at": "2026-10-27T08:08:36.640Z"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B cannot read A",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=tasks&id=362d9511-3e5d-412e-a8d3-2804eb5d9915",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+            "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+            "title": "Tamper",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "4a63ed3f-47f7-4ee7-ae3d-32ce09a49498"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+          },
+          "requestId": "188b9c7d-12a0-4e93-975c-47cd07beac7f"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+            "title": "Wrong parent",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 1
+          },
+          "requestId": "26b0353a-2d16-4199-92f6-8a72085b8f46"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B timer.start",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "timer.start",
+          "data": {
+            "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915"
+          },
+          "requestId": "a6f2e48b-2472-4c85-902e-707aba417d1e"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다. 새로고침해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A state after denied requests",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            },
+            {
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "cb1f4c6a-9c84-4f79-9f9f-f8909791a694",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "version": 1,
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7"
+            },
+            {
+              "revision_id": "4b0542ca-7575-4f1d-b89a-e281d0057d9a",
+              "plan_id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "Own update A",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:35.570Z",
+              "updated_at": "2026-10-27T08:08:39.834Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "84efe86f-7a4d-47b5-b199-22215359fd54",
+              "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:35.873Z",
+              "updated_at": "2026-10-27T08:08:35.873Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B forged URL/header returns own list",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?owner_id=7DimtyV0EJBv58cf5cZPspxzPtTyHEXz",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "x-user-id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz",
+          "oai-authenticated-user-id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "3781692e-63c1-4554-8092-2c8a3f0a9a50",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "version": 1,
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA task B",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:36.640Z",
+              "updated_at": "2026-10-27T08:08:36.640Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "25ebabaa-6fde-41bc-a374-b88c72782fd8",
+              "task_id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:36.946Z",
+              "updated_at": "2026-10-27T08:08:36.946Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B task.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.save",
+          "data": {
+            "id": "b051500e-0575-43ce-b266-734a1db33d26",
+            "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+            "title": "Own update B",
+            "due_date": "2026-10-27",
+            "priority": "medium",
+            "tags": [],
+            "estimated_minutes": 30
+          },
+          "requestId": "7b2944b9-6dbb-42d5-ae71-037d83db8dfc"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "b051500e-0575-43ce-b266-734a1db33d26"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B task.delete",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.delete",
+          "data": {
+            "id": "b051500e-0575-43ce-b266-734a1db33d26"
+          },
+          "requestId": "c02c98e6-259f-4b86-a7d0-b6487ce1ea46"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "b051500e-0575-43ce-b266-734a1db33d26"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B task.restore",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "task.restore",
+          "data": {
+            "id": "b051500e-0575-43ce-b266-734a1db33d26"
+          },
+          "requestId": "2389892c-899b-4c7f-abfb-5f6df130edb2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "b051500e-0575-43ce-b266-734a1db33d26"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B plan.save",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "Deployment QA plan",
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "QA only",
+            "estimated_minutes": 60,
+            "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz",
+            "user_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+          },
+          "requestId": "792dae8e-ab1a-4464-92f4-a085f6a72614"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "eb2c7c84-e930-45e6-8eff-b9b864820201"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "body owner ignored",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary?record=plans&id=eb2c7c84-e930-45e6-8eff-b9b864820201",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "id": "eb2c7c84-e930-45e6-8eff-b9b864820201",
+          "title": "Deployment QA plan",
+          "start_date": "2026-10-27",
+          "end_date": "2026-10-31",
+          "priority": "medium",
+          "success_criteria": "QA only",
+          "estimated_minutes": 60,
+          "version": 1,
+          "created_at": "2026-10-27T08:08:43.803Z",
+          "updated_at": "2026-10-27T08:08:43.803Z",
+          "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B private export",
+      "request": {
+        "method": "GET",
+        "path": "/api/export",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "version": "pds-schema-v3",
+          "exported_at": "2026-10-27T08:08:44.266Z",
+          "timezone": "Asia/Seoul",
+          "duration_unit": "minute",
+          "plans": [
+            {
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            },
+            {
+              "id": "eb2c7c84-e930-45e6-8eff-b9b864820201",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:43.803Z",
+              "updated_at": "2026-10-27T08:08:43.803Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "3781692e-63c1-4554-8092-2c8a3f0a9a50",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "version": 1,
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0"
+            },
+            {
+              "revision_id": "ff232d65-2b6c-458b-9a79-df8c6abeec0c",
+              "plan_id": "eb2c7c84-e930-45e6-8eff-b9b864820201",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:43.803Z",
+              "updated_at": "2026-10-27T08:08:43.803Z",
+              "id": "eb2c7c84-e930-45e6-8eff-b9b864820201"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "Own update B",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:36.640Z",
+              "updated_at": "2026-10-27T08:08:43.482Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "25ebabaa-6fde-41bc-a374-b88c72782fd8",
+              "task_id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:36.946Z",
+              "updated_at": "2026-10-27T08:08:36.946Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27",
+          "completions": [],
+          "profile": {
+            "id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC",
+            "name": "Deployment QA 1793088507976 B",
+            "email": "qa-deploy-1793088507976-b@example.test"
+          },
+          "experiments": [],
+          "experiment_days": [],
+          "rule_changes": [],
+          "imports": []
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "anonymous forged identity denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "x-user-id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz",
+          "oai-authenticated-user-id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "cross-origin write denied",
+      "request": {
+        "method": "POST",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://other.example.test",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "action": "plan.save",
+          "data": {
+            "title": "Deployment QA plan",
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-31",
+            "priority": "medium",
+            "success_criteria": "QA only",
+            "estimated_minutes": 60
+          },
+          "requestId": "5619a458-8d25-44a9-8017-3671b8917eca"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "error": "같은 앱에서 다시 요청해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "tampered session signature denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-3 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "same GET before logout",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            },
+            {
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "cb1f4c6a-9c84-4f79-9f9f-f8909791a694",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "version": 1,
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7"
+            },
+            {
+              "revision_id": "4b0542ca-7575-4f1d-b89a-e281d0057d9a",
+              "plan_id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "Own update A",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:35.570Z",
+              "updated_at": "2026-10-27T08:08:39.834Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "84efe86f-7a4d-47b5-b199-22215359fd54",
+              "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:35.873Z",
+              "updated_at": "2026-10-27T08:08:35.873Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "logout revokes DB session",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {}
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "same GET and old cookie after logout denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-1 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A login",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "email": "qa-deploy-1793088507976-a@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "password change revokes previously issued value",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/password",
+        "headers": {
+          "Cookie": "[cookie-ref-4 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "currentPassword": "[REDACTED]",
+          "newPassword": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "old cookie after password change denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-4 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "replacement cookie accepted",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-5 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            },
+            {
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "owner_id": "7DimtyV0EJBv58cf5cZPspxzPtTyHEXz"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "cb1f4c6a-9c84-4f79-9f9f-f8909791a694",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "version": 1,
+              "title": "QA 1793088507976 A",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:35.290Z",
+              "updated_at": "2026-10-27T08:08:35.290Z",
+              "id": "008fd88c-a511-4a49-99e6-0d09059618d7"
+            },
+            {
+              "revision_id": "4b0542ca-7575-4f1d-b89a-e281d0057d9a",
+              "plan_id": "eb3561f0-d983-435f-ade6-cc3450d5edd5",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:40.119Z",
+              "updated_at": "2026-10-27T08:08:40.119Z",
+              "id": "eb3561f0-d983-435f-ade6-cc3450d5edd5"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "plan_id": "008fd88c-a511-4a49-99e6-0d09059618d7",
+              "title": "Own update A",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:35.570Z",
+              "updated_at": "2026-10-27T08:08:39.834Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "84efe86f-7a4d-47b5-b199-22215359fd54",
+              "task_id": "362d9511-3e5d-412e-a8d3-2804eb5d9915",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:35.873Z",
+              "updated_at": "2026-10-27T08:08:35.873Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B before A deletion",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            },
+            {
+              "id": "eb2c7c84-e930-45e6-8eff-b9b864820201",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:43.803Z",
+              "updated_at": "2026-10-27T08:08:43.803Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "3781692e-63c1-4554-8092-2c8a3f0a9a50",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "version": 1,
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0"
+            },
+            {
+              "revision_id": "ff232d65-2b6c-458b-9a79-df8c6abeec0c",
+              "plan_id": "eb2c7c84-e930-45e6-8eff-b9b864820201",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:43.803Z",
+              "updated_at": "2026-10-27T08:08:43.803Z",
+              "id": "eb2c7c84-e930-45e6-8eff-b9b864820201"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "Own update B",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:36.640Z",
+              "updated_at": "2026-10-27T08:08:43.482Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "25ebabaa-6fde-41bc-a374-b88c72782fd8",
+              "task_id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:36.946Z",
+              "updated_at": "2026-10-27T08:08:36.946Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "wrong-password account deletion denied",
+      "request": {
+        "method": "DELETE",
+        "path": "/api/account",
+        "headers": {
+          "Cookie": "[cookie-ref-5 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "password": "[REDACTED]",
+          "confirm": "내 계정 삭제"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "error": "비밀번호가 올바르지 않습니다.",
+          "field": "password"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "A account and own data deleted",
+      "request": {
+        "method": "DELETE",
+        "path": "/api/account",
+        "headers": {
+          "Cookie": "[cookie-ref-5 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "password": "[REDACTED]",
+          "confirm": "내 계정 삭제"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "deleted A session denied",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-5 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B unchanged after A deletion",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-2 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            },
+            {
+              "id": "eb2c7c84-e930-45e6-8eff-b9b864820201",
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "version": 1,
+              "created_at": "2026-10-27T08:08:43.803Z",
+              "updated_at": "2026-10-27T08:08:43.803Z",
+              "owner_id": "DGpJsPwFT9GCQ22oL6qsooK9rJKMkAHC"
+            }
+          ],
+          "revisions": [
+            {
+              "revision_id": "3781692e-63c1-4554-8092-2c8a3f0a9a50",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "version": 1,
+              "title": "QA 1793088507976 B",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:36.183Z",
+              "updated_at": "2026-10-27T08:08:36.183Z",
+              "id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0"
+            },
+            {
+              "revision_id": "ff232d65-2b6c-458b-9a79-df8c6abeec0c",
+              "plan_id": "eb2c7c84-e930-45e6-8eff-b9b864820201",
+              "version": 1,
+              "title": "Deployment QA plan",
+              "start_date": "2026-10-27",
+              "end_date": "2026-10-31",
+              "priority": "medium",
+              "success_criteria": "QA only",
+              "estimated_minutes": 60,
+              "created_at": "2026-10-27T08:08:43.803Z",
+              "updated_at": "2026-10-27T08:08:43.803Z",
+              "id": "eb2c7c84-e930-45e6-8eff-b9b864820201"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "plan_id": "58c69648-8fa2-4259-bf8f-f8b4639ec2a0",
+              "title": "Own update B",
+              "due_date": "2026-10-27",
+              "priority": "medium",
+              "tags": [],
+              "estimated_minutes": 30,
+              "status": "todo",
+              "completion_cycle": 0,
+              "deleted_at": null,
+              "created_at": "2026-10-27T08:08:36.640Z",
+              "updated_at": "2026-10-27T08:08:43.482Z"
+            }
+          ],
+          "executions": [
+            {
+              "id": "25ebabaa-6fde-41bc-a374-b88c72782fd8",
+              "task_id": "b051500e-0575-43ce-b266-734a1db33d26",
+              "started_at": "2026-10-27T00:00:00.000Z",
+              "ended_at": "2026-10-27T00:10:00.000Z",
+              "actual_minutes": 10,
+              "blocked_reason": "Synthetic QA",
+              "created_at": "2026-10-27T08:08:36.946Z",
+              "updated_at": "2026-10-27T08:08:36.946Z"
+            }
+          ],
+          "timers": [],
+          "reviews": [],
+          "today": "2026-10-27"
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B login",
+      "request": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "headers": {
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "email": "qa-deploy-1793088507976-b@example.test",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B QA account cleanup",
+      "request": {
+        "method": "DELETE",
+        "path": "/api/account",
+        "headers": {
+          "Cookie": "[cookie-ref-6 REDACTED]",
+          "Origin": "https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "password": "[REDACTED]",
+          "confirm": "내 계정 삭제"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        },
+        "cache_control": "no-store, private"
+      }
+    },
+    {
+      "label": "B cleanup cookie no longer accepted",
+      "request": {
+        "method": "GET",
+        "path": "/api/diary",
+        "headers": {
+          "Cookie": "[cookie-ref-6 REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 만료되었습니다. 다시 로그인해 주세요.",
+          "field": ""
+        },
+        "cache_control": "no-store, private"
+      }
+    }
+  ]
+}

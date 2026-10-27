@@ -34,7 +34,7 @@ Better Auth **1.7.14**를 기존 Drizzle **0.45.2**·Cloudflare D1에 연결했�
 
 ## ④ 안 열리는 것을 확인한 기록
 
-실제 로컬 Worker·D1의 [요청·응답 61건](evidence/authentication/http-results.json)과 [검증 결과](evidence/verification-results.md)를 남겼습니다. 가입/접근·비밀번호·세션·계정 분리·자료 관리의 다섯 묶음입니다.
+실제 로컬 Worker·D1의 [요청·응답 61건](evidence/authentication/http-results.json), 배포 후 [운영 검증 73건](evidence/authentication/deployment-http-results.json)과 [검증 결과](evidence/verification-results.md)를 남겼습니다. 가입/접근·비밀번호·세션·계정 분리·자료 관리의 다섯 묶음입니다.
 
 본인 요청과 타 계정 거절을 함께 확인했고, 로그아웃 전후는 같은 URL·GET·같은 원문 쿠키를 재사용했습니다. 공개 기록의 `cookie-ref-N`은 원문을 가린 동일 값 별칭입니다. A→B/B→A 읽기·수정·삭제는 모두 404이며 거절 전후 상대 내용과 건수가 같습니다. 실제 비밀번호·토큰·세션·비밀키는 증거에서 제외했습니다.
 

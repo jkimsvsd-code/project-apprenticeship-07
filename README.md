@@ -5,7 +5,7 @@
 **필수 기능과 UX A1~A7을 구현했습니다.** 과제6의 계획·할 일·실행·타이머·회고·다음 계획 연결을 계승했습니다. 실제 5일 사용은 사용자가 직접 진행해야 하며 자동 테스트나 예전 기록으로 대신하지 않았습니다.
 
 - 로컬 앱: 실행 후 `http://127.0.0.1:5173`
-- 과제7 배포 대상은 준비했으며 소스 원격 전송·배포는 승인 대기입니다. 현재 배포 URL을 사용 가능한 결과물로 안내하지 않습니다.
+- [과제7 앱 열기](https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site) · [배포 및 운영 검증](docs/deployment.md)
 - [검증 결과](docs/evidence/verification-results.md) · [직접 진행할 5일 사용 절차](docs/five-day-guide.md)
 - [인증 구현 설명서](docs/authentication.md) · [승인 범위](docs/scope.md) · [요구사항 대응표](docs/requirements.md)
 
@@ -52,7 +52,7 @@ npm run build
 npm run test:http:auth
 ```
 
-과제6 회귀 검증을 포함한 단위·SQLite 통합 테스트 22개와 실제 로컬 Cloudflare Worker의 마스킹한 HTTP/비밀번호 증거 61건을 확인했습니다. 브라우저에서는 로그인, 자료 이전, 실험 설정·기록, 만료 후 입력 복귀, 계정 관리 안내를 확인했습니다. [세부 결과와 한계](docs/evidence/verification-results.md)
+과제6 회귀 검증을 포함한 단위·SQLite 통합 테스트 22개, 실제 로컬 Worker 증거 61건, 배포된 운영 Worker의 인증·자료 보호 검증 73건을 확인했습니다. 운영 검증용 A/B 계정과 자료는 모두 삭제했습니다. 브라우저에서는 로그인, 자료 이전, 실험 설정·기록, 만료 후 입력 복귀, 계정 관리 안내를 확인했습니다. [세부 결과와 한계](docs/evidence/verification-results.md)
 
 ## 기존 자료와 실제 사용
 

@@ -1,6 +1,6 @@
 # 실제 프로젝트 구조
 
-2026-10-27 구현 후 구조입니다. Git 내부·의존성·빌드 출력·비밀값·로컬 개인 자료는 생략했습니다.
+2026-10-27 배포·운영 검증 후 구조입니다. Git 내부·의존성·빌드 출력·비밀값·개인 자료는 생략했습니다.
 
 ```text
 project-apprenticeship-07/
@@ -88,6 +88,9 @@ project-apprenticeship-07/
 │   ├── evidence/
 │   │   ├── authentication/
 │   │   │   ├── .gitkeep
+│   │   │   ├── deployed-login.png
+│   │   │   ├── deployed-signup.png
+│   │   │   ├── deployment-http-results.json
 │   │   │   ├── http-results.json
 │   │   │   └── login-screen.png
 │   │   ├── data-management/
@@ -106,6 +109,7 @@ project-apprenticeship-07/
 │   ├── README.md
 │   ├── architecture.md
 │   ├── authentication.md
+│   ├── deployment.md
 │   ├── experiment.md
 │   ├── five-day-guide.md
 │   ├── migration.md
@@ -273,4 +277,4 @@ project-apprenticeship-07/
 └── vite.config.ts
 ```
 
-[승인 범위](scope.md) · [구현 상태](roadmap.md) · [검증 결과](evidence/verification-results.md) · [실제 5일 절차](five-day-guide.md)
+[승인 범위](scope.md) · [배포](deployment.md) · [검증 결과](evidence/verification-results.md) · [실제 5일 절차](five-day-guide.md)
