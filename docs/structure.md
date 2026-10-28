@@ -97,7 +97,8 @@ project-apprenticeship-07/
 │   │   │   └── .gitkeep
 │   │   ├── experiment/
 │   │   │   ├── .gitkeep
-│   │   │   └── browser-experiment.png
+│   │   │   ├── browser-experiment.png
+│   │   │   └── manual-check.md
 │   │   ├── ownership/
 │   │   │   └── .gitkeep
 │   │   ├── passwords/
@@ -105,6 +106,8 @@ project-apprenticeship-07/
 │   │   ├── sessions/
 │   │   │   └── .gitkeep
 │   │   ├── README.md
+│   │   ├── completion-review.md
+│   │   ├── completion-status.json
 │   │   └── verification-results.md
 │   ├── README.md
 │   ├── architecture.md

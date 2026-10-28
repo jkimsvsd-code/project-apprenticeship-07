@@ -3,7 +3,12 @@
   "baseline_assignment": "T06",
   "baseline_repository": "https://github.com/jkimsvsd-code/project-apprenticeship-06",
   "baseline_commit": "53ee04f3d3865e89fde664f56bca93d614057560",
-  "baseline_commit_status": "local_snapshot_pending_final_submission_match",
+  "baseline_commit_status": "final_submission_confirmed_by_user_and_public_main_verified",
+  "baseline_verified_on": "2026-10-27",
+  "baseline_is_t07_ancestor": true,
+  "completion_evidence": "docs/evidence/completion-status.json",
+  "actual_account_import_status": "verified_in_production",
+  "actual_experiment_status": "configured_0_of_5_days",
   "approved_scope": [
     "required_steps_0_to_7",
     "UX_A1",

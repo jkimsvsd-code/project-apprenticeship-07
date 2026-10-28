@@ -1,0 +1,33 @@
+{
+  "verified_on": "2026-10-27",
+  "timezone": "Asia/Seoul",
+  "method": "Sites read-only production table inspection; credentials excluded",
+  "source_commit": "8d7cd259d030e3740019fc1f936ff35299d593dc",
+  "account_created": true,
+  "import_receipt_present": true,
+  "owned_counts": {
+    "plans": 2,
+    "revisions": 2,
+    "tasks": 5,
+    "executions": 3,
+    "reviews": 1
+  },
+  "actual_minutes": 75,
+  "review_next_plan_link_preserved": true,
+  "experiment": {
+    "configured": true,
+    "actual_recorded_days": 0,
+    "rule_changes": 0,
+    "required_recorded_days": 5
+  },
+  "private_identifiers_included": false,
+  "baseline": {
+    "submitted_commit_confirmed_by_user": true,
+    "submitted_commit": "53ee04f3d3865e89fde664f56bca93d614057560",
+    "github_main_matches": true,
+    "t07_ancestor_verified": true,
+    "t06_site_version": 3,
+    "t06_site_source_commit": "af71dc4e0d9531908637f7cceff0b63e2090d2a1",
+    "site_to_submission_difference": "README.md, docs/evidence/verification-results.md, docs/submission.md only; runtime source unchanged"
+  }
+}
