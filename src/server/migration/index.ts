@@ -1,5 +1,11 @@
 import { AppError } from "../store";
 import type { Database, Statement } from "../store";
+import {
+  IMPORT_FILE_BYTES,
+  IMPORT_MAX_FILES,
+  IMPORT_MAX_ROWS,
+} from "../../shared/import-limits";
+import { checkImportQuota, importedRowsSQL, importQuotaError } from "./limits";
 const names = [
   "plans",
   "revisions",
@@ -93,9 +99,45 @@ async function digest(value: string) {
     .map((x) => x.toString(16).padStart(2, "0"))
     .join("");
 }
+const calendarFields = new Set([
+  "start_date",
+  "end_date",
+  "due_date",
+  "from_date",
+  "to_date",
+]);
+const timestampFields = new Set([
+  "created_at",
+  "updated_at",
+  "started_at",
+  "ended_at",
+  "deleted_at",
+]);
+function validDate(value: string) {
+  return (
+    /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+    value.slice(0, 4) !== "0000" &&
+    Number.isFinite(Date.parse(`${value}T00:00:00.000Z`)) &&
+    new Date(`${value}T00:00:00.000Z`).toISOString().slice(0, 10) === value
+  );
+}
+function validTimestamp(value: string) {
+  // T06 exports canonical UTC timestamps. Keep the original string and hash.
+  return (
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
+    validDate(value.slice(0, 10)) &&
+    Number.isFinite(Date.parse(value)) &&
+    new Date(value).toISOString() === value
+  );
+}
 function decode(input: unknown): Source {
   if (!input || typeof input !== "object" || Array.isArray(input))
     throw new AppError("과제6 JSON 파일을 선택해 주세요.");
+  if (
+    new TextEncoder().encode(JSON.stringify(input)).byteLength >
+    IMPORT_FILE_BYTES
+  )
+    throw new AppError("2MB 이하의 과제6 JSON 파일을 선택해 주세요.", 413);
   const obj = input as Row;
   if (
     obj.version !== "pds-schema-v2" ||
@@ -112,6 +154,8 @@ function decode(input: unknown): Source {
     if (!Array.isArray(rows) || rows.length > 5000)
       throw new AppError(`${kind} 자료를 확인해 주세요.`);
     total += rows.length;
+    if (total > 10000)
+      throw new AppError("한 번에 최대 10,000건까지 가져올 수 있습니다.");
     result[kind] = rows.map((raw) => {
       if (!raw || typeof raw !== "object" || Array.isArray(raw))
         throw new AppError("파일에 잘못된 기록이 있습니다.");
@@ -157,8 +201,38 @@ function decode(input: unknown): Source {
             throw new AppError("시간·버전 값을 확인해 주세요.");
         } else if (typeof v !== "string" || v.length > 5000)
           throw new AppError(`${key} 값을 확인해 주세요.`);
+        if (calendarFields.has(key) && !validDate(String(v)))
+          throw new AppError(
+            `${key}: 실제 존재하는 YYYY-MM-DD 날짜를 입력해 주세요.`,
+          );
+        if (timestampFields.has(key) && !validTimestamp(String(v)))
+          throw new AppError(
+            `${key}: 과제6 내보내기의 UTC 시각 형식을 확인해 주세요.`,
+          );
+        if ((key === "id" || key.endsWith("_id")) && !String(v).trim())
+          throw new AppError(`${key} 값을 확인해 주세요.`);
         clean[key] = v;
       }
+      if (
+        (kind === "plans" || kind === "revisions") &&
+        String(clean.end_date) < String(clean.start_date)
+      )
+        throw new AppError("계획 종료일은 시작일 이후여야 합니다.");
+      if (kind === "reviews" && String(clean.to_date) < String(clean.from_date))
+        throw new AppError("회고 종료일은 시작일 이후여야 합니다.");
+      if (
+        kind === "executions" &&
+        Date.parse(String(clean.ended_at)) <
+          Date.parse(String(clean.started_at))
+      )
+        throw new AppError("실행 종료 시각은 시작 시각 이후여야 합니다.");
+      if (
+        clean.created_at &&
+        clean.updated_at &&
+        Date.parse(String(clean.updated_at)) <
+          Date.parse(String(clean.created_at))
+      )
+        throw new AppError("수정 시각은 작성 시각 이후여야 합니다.");
       return clean;
     });
     const key =
@@ -171,8 +245,6 @@ function decode(input: unknown): Source {
       throw new AppError("파일 안에 중복 ID가 있습니다.");
     result[kind].sort((a, b) => String(a[key]).localeCompare(String(b[key])));
   }
-  if (total > 10000)
-    throw new AppError("한 번에 최대 10,000건까지 가져올 수 있습니다.");
   const planIds = new Set(result.plans.map((r) => r.id)),
     taskIds = new Set(result.tasks.map((r) => r.id));
   for (const kind of ["revisions", "tasks", "reviews"] as const)
@@ -203,6 +275,12 @@ export async function previewImport(
     )
     .bind(userId, source_hash)
     .first();
+  if (!previous)
+    await checkImportQuota(
+      db,
+      userId,
+      names.reduce((sum, n) => sum + source[n].length, 0),
+    );
   return {
     source_hash,
     counts: Object.fromEntries(names.map((n) => [n, source[n].length])),
@@ -238,7 +316,36 @@ export async function importDiary(
         `imp_${(await digest(`${userId}:${preview.source_hash}:${kind}:${old}`)).slice(0, 40)}`,
       );
     }
-  const statements: Statement[] = [];
+  const at = new Date().toISOString();
+  const receiptId = crypto.randomUUID();
+  const rowCount = names.reduce((sum, n) => sum + source[n].length, 0);
+  // Claim a receipt and its quota atomically BEFORE inserting any diary rows.
+  // Each following insert requires this request's own receipt. A competing
+  // import that loses the quota/dedup race therefore writes no diary data.
+  const statements: Statement[] = [
+    db
+      .prepare(
+        `INSERT INTO imports (id,user_id,source_hash,counts_json,imported_at)
+       SELECT ?,?,?,?,? WHERE
+       NOT EXISTS (SELECT 1 FROM imports WHERE user_id=? AND source_hash=?)
+       AND (SELECT COUNT(*) FROM imports WHERE user_id=?)<?
+       AND ${importedRowsSQL}+?<=?`,
+      )
+      .bind(
+        receiptId,
+        userId,
+        preview.source_hash,
+        JSON.stringify(preview.counts),
+        at,
+        userId,
+        preview.source_hash,
+        userId,
+        IMPORT_MAX_FILES,
+        userId,
+        rowCount,
+        IMPORT_MAX_ROWS,
+      ),
+  ];
   for (const kind of names)
     for (const row of source[kind]) {
       const copy = { ...row };
@@ -256,37 +363,35 @@ export async function importDiary(
       statements.push(
         db
           .prepare(
-            `INSERT INTO ${tables[kind]} (${fields.join(",")}) SELECT ${fields.map(() => "?").join(",")} WHERE NOT EXISTS (SELECT 1 FROM imports WHERE user_id=? AND source_hash=?)`,
+            `INSERT INTO ${tables[kind]} (${fields.join(",")}) SELECT ${fields.map(() => "?").join(",")} WHERE EXISTS (SELECT 1 FROM imports WHERE id=? AND user_id=?)`,
           )
-          .bind(...fields.map((f) => copy[f]), userId, preview.source_hash),
+          .bind(...fields.map((f) => copy[f]), receiptId, userId),
       );
     }
-  const at = new Date().toISOString();
   statements.push(
     db
       .prepare(
-        "INSERT OR IGNORE INTO imports (id,user_id,source_hash,counts_json,imported_at) VALUES (?,?,?,?,?)",
+        "SELECT id,imported_at FROM imports WHERE user_id=? AND source_hash=?",
       )
-      .bind(
-        crypto.randomUUID(),
-        userId,
-        preview.source_hash,
-        JSON.stringify(preview.counts),
-        at,
-      ),
+      .bind(userId, preview.source_hash),
   );
+  let receipt: { id: string; imported_at: string } | undefined;
   try {
-    await db.batch(statements);
+    const results = (await db.batch(statements)) as {
+      results: { id: string; imported_at: string }[];
+    }[];
+    receipt = results.at(-1)?.results[0];
   } catch {
     throw new AppError(
       "가져오기에 실패해 전체 작업을 되돌렸습니다. 파일을 확인하고 다시 시도해 주세요.",
       400,
     );
   }
+  if (!receipt) throw importQuotaError();
   return {
     ...preview,
     alreadyImported: true,
-    imported_at: at,
-    duplicate: false,
+    imported_at: receipt.imported_at,
+    duplicate: receipt.id !== receiptId,
   };
 }

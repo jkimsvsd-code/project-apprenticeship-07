@@ -16,6 +16,7 @@ export class AppError extends Error {
     message: string,
     public status = 400,
     public field = "",
+    public retryAfter?: number,
   ) {
     super(message);
   }

@@ -62,3 +62,10 @@ export const imports = sqliteTable(
   },
   (t) => [uniqueIndex("import_once_per_user").on(t.user_id, t.source_hash)],
 );
+export const importRequestLimits = sqliteTable("import_request_limits", {
+  user_id: text()
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  window_start: integer().notNull(),
+  request_count: integer().notNull(),
+});

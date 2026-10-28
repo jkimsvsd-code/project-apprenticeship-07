@@ -19,6 +19,9 @@ export function failure(error: unknown) {
       field: error instanceof AppError ? error.field : "",
     },
     error instanceof AppError ? error.status : 503,
+    error instanceof AppError && error.retryAfter
+      ? { "Retry-After": String(error.retryAfter) }
+      : undefined,
   );
 }
 export function sameOrigin(request: Request) {
@@ -36,9 +39,39 @@ export async function body(
   sameOrigin(request);
   if (!request.headers.get("content-type")?.includes("application/json"))
     throw new AppError("JSON 요청이 필요합니다.", 415);
-  const source = await request.text();
-  if (new TextEncoder().encode(source).byteLength > max)
-    throw new AppError("파일이나 요청이 너무 큽니다.", 413);
+  const tooLarge = () => new AppError("파일이나 요청이 너무 큽니다.", 413);
+  const length = request.headers.get("content-length");
+  if (length && /^\d+$/.test(length) && Number(length) > max) {
+    await request.body?.cancel().catch(() => {});
+    throw tooLarge();
+  }
+  const reader = request.body?.getReader();
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  // One bounded buffer also avoids per-chunk allocation amplification when a
+  // sender splits a legal-size body into millions of tiny fragments.
+  const bytes = new Uint8Array(max);
+  let size = 0;
+  let source: string;
+  try {
+    if (reader) {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (size + value.byteLength > max) {
+          await reader.cancel().catch(() => {});
+          throw tooLarge();
+        }
+        bytes.set(value, size);
+        size += value.byteLength;
+      }
+    }
+    source = decoder.decode(bytes.subarray(0, size));
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError("입력 형식을 확인해 주세요.");
+  } finally {
+    reader?.releaseLock();
+  }
   let data;
   try {
     data = JSON.parse(source);

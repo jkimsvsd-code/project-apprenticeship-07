@@ -108,6 +108,8 @@ project-apprenticeship-07/
 │   │   ├── README.md
 │   │   ├── completion-review.md
 │   │   ├── completion-status.json
+│   │   ├── import-hardening.json
+│   │   ├── import-hardening.md
 │   │   └── verification-results.md
 │   ├── README.md
 │   ├── architecture.md
@@ -126,9 +128,11 @@ project-apprenticeship-07/
 │   ├── meta/
 │   │   ├── 0000_snapshot.json
 │   │   ├── 0001_snapshot.json
+│   │   ├── 0002_snapshot.json
 │   │   └── _journal.json
 │   ├── 0000_steep_paladin.sql
-│   └── 0001_orange_aaron_stack.sql
+│   ├── 0001_orange_aaron_stack.sql
+│   └── 0002_pale_the_liberteens.sql
 ├── lib/
 │   ├── connector-context.ts
 │   ├── connector-contract.mts
@@ -212,7 +216,8 @@ project-apprenticeship-07/
 │   │   │   └── index.ts
 │   │   ├── migration/
 │   │   │   ├── README.md
-│   │   │   └── index.ts
+│   │   │   ├── index.ts
+│   │   │   └── limits.ts
 │   │   ├── http.ts
 │   │   ├── runtime.ts
 │   │   └── store.ts
@@ -221,7 +226,8 @@ project-apprenticeship-07/
 │   │   │   ├── README.md
 │   │   │   └── index.ts
 │   │   ├── client.ts
-│   │   └── domain.ts
+│   │   ├── domain.ts
+│   │   └── import-limits.ts
 │   ├── Diary.tsx
 │   └── README.md
 ├── tests/
@@ -240,13 +246,15 @@ project-apprenticeship-07/
 │   │   │   └── flow.test.ts
 │   │   ├── migration/
 │   │   │   ├── README.md
-│   │   │   └── migration.test.ts
+│   │   │   ├── migration.test.ts
+│   │   │   └── security.test.ts
 │   │   ├── ownership/
 │   │   │   ├── README.md
 │   │   │   └── ownership.test.ts
 │   │   ├── .gitkeep
 │   │   ├── http-auth.mjs
 │   │   ├── http-flow.mjs
+│   │   ├── import-http.mjs
 │   │   └── store.test.ts
 │   ├── unit/
 │   │   ├── auth/

@@ -38,9 +38,9 @@ class TestStatement {
   bind(...values: unknown[]) {
     return new TestStatement(this.owner, this.query, values);
   }
-  async all() {
+  async all<T = Record<string, unknown>>() {
     const stmt = this.owner.sqlite.prepare(this.query);
-    const rows = stmt.all(...(this.values as never[]));
+    const rows = stmt.all(...(this.values as never[])) as unknown as T[];
     return {
       success: true,
       results: rows,
@@ -69,10 +69,10 @@ class TestStatement {
       ? [stmt.columns().map((c) => c.name), ...rows]
       : rows;
   }
-  async first(column?: string) {
+  async first<T = Record<string, unknown>>(column?: string): Promise<T | null> {
     const row = this.owner.sqlite
       .prepare(this.query)
       .get(...(this.values as never[]));
-    return column ? (row?.[column] ?? null) : (row ?? null);
+    return (column ? (row?.[column] ?? null) : (row ?? null)) as T | null;
   }
 }

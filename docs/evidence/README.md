@@ -1,5 +1,7 @@
 # 과제7 공개 증거
 
+2026-10-28 [가져오기 보안 보완](import-hardening.md)과 [인증값 없는 새 HTTP 결과](import-hardening.json)를 추가했습니다. 로컬 검증과 운영 반영 상태를 구분합니다.
+
 [검증 결과](verification-results.md)와 authentication/http-results.json에 로컬 실제 Worker·D1의 마스킹한 요청/응답 61건, authentication/deployment-http-results.json에 운영 검증 73건을 보관했습니다. authentication/deployed-login.png와 deployed-signup.png는 운영의 비어 있는 인증 화면입니다. authentication/login-screen.png는 비밀값 없는 로그인 화면이고, experiment/browser-experiment.png는 폐기용 계정의 UI 검증 화면입니다. 실제 5일 사용 증거는 아직 없으며 사용자가 직접 기록한 뒤 추가합니다. 빈 폴더의 .gitkeep은 통과 증거가 아닙니다.
 
 2026-10-27 [체크리스트 재확인](completion-review.md)과 [개인정보를 제외한 상태 JSON](completion-status.json)을 추가했습니다. 본인 계정 가입·실제 자료 이전·과제6 제출 커밋 대조는 완료했고, 실제 일별 기록은 0/5일입니다. [실제 값·수동 검산 양식](experiment/manual-check.md)은 준비 자료이며 실제 사용의 완료 증거가 아닙니다.

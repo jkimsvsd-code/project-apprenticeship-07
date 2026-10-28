@@ -15,6 +15,13 @@
       "when": 1793085667574,
       "tag": "0001_orange_aaron_stack",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1793150457447,
+      "tag": "0002_pale_the_liberteens",
+      "breakpoints": true
     }
   ]
 }

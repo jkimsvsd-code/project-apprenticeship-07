@@ -1,0 +1,146 @@
+{
+  "verified_on": "2026-10-28",
+  "timezone": "Asia/Seoul",
+  "implementation_status": "verified_locally",
+  "production_status": "pending_source_sync_auto_review_approval",
+  "limits": {
+    "requests_per_fixed_60_second_window": 12,
+    "distinct_successful_imports_per_account": 5,
+    "cumulative_import_rows_per_account": 20000,
+    "file_bytes": 2000000,
+    "request_envelope_bytes": 128
+  },
+  "checks": {
+    "typecheck": "passed",
+    "unit_and_sqlite_tests": 30,
+    "new_security_tests": 8,
+    "schema_contract": "passed",
+    "production_build": "passed",
+    "local_auth_http_checks": 61,
+    "local_import_http_checks": 24
+  },
+  "legacy_compatibility": {
+    "counts": {
+      "plans": 2,
+      "revisions": 2,
+      "tasks": 5,
+      "executions": 3,
+      "timers": 0,
+      "reviews": 1,
+      "completions": 0
+    },
+    "minutes": 75,
+    "duplicate": true,
+    "previous_receipt_hash_matches": true
+  },
+  "local_import_http": {
+    "executed_at": "2026-10-28T01:26:09.176Z",
+    "environment": "local Worker/D1",
+    "origin": "http://127.0.0.1:5173",
+    "fixture": "synthetic tests/fixtures/t06-export.json",
+    "actual_user_records_modified": false,
+    "disposable_accounts_removed": 2,
+    "credentials_included": false,
+    "records": [
+      {
+        "test": "anonymous import denied",
+        "status": 401
+      },
+      {
+        "test": "A disposable signup",
+        "status": 200
+      },
+      {
+        "test": "B disposable signup",
+        "status": 200
+      },
+      {
+        "test": "invalid timestamp denied",
+        "status": 400
+      },
+      {
+        "test": "impossible calendar date denied",
+        "status": 400
+      },
+      {
+        "test": "oversized HTTP request denied",
+        "status": 413
+      },
+      {
+        "test": "exact 2MB source plus envelope accepted",
+        "status": 200
+      },
+      {
+        "test": "normal import accepted",
+        "status": 200
+      },
+      {
+        "test": "same-file retry deduplicated",
+        "status": 200
+      },
+      {
+        "test": "bounded variant 1 accepted",
+        "status": 200
+      },
+      {
+        "test": "bounded variant 2 accepted",
+        "status": 200
+      },
+      {
+        "test": "bounded variant 3 accepted",
+        "status": 200
+      },
+      {
+        "test": "bounded variant 4 accepted",
+        "status": 200
+      },
+      {
+        "test": "sixth distinct import denied",
+        "status": 409
+      },
+      {
+        "test": "per-account request limit",
+        "status": 200
+      },
+      {
+        "test": "per-account request limit",
+        "status": 429,
+        "retry_after": "52"
+      },
+      {
+        "test": "other account remains independent",
+        "status": 200
+      },
+      {
+        "test": "A private export",
+        "status": 200
+      },
+      {
+        "test": "B private export",
+        "status": 200
+      },
+      {
+        "test": "quotas and rejected imports preserve account isolation and record counts",
+        "passed": true
+      },
+      {
+        "test": "A disposable account cleanup",
+        "status": 200
+      },
+      {
+        "test": "A removed session denied",
+        "status": 401
+      },
+      {
+        "test": "B disposable account cleanup",
+        "status": 200
+      },
+      {
+        "test": "B removed session denied",
+        "status": 401
+      }
+    ]
+  },
+  "real_user_data_modified": false,
+  "credentials_included": false
+}

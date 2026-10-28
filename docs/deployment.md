@@ -2,6 +2,8 @@
 
 배포일: 2026-10-27 (Asia/Seoul).
 
+2026-10-28 가져오기 보안 보완: 소스 수정·로컬 검증 완료. Sites 소스 인증값 전달 단계가 자동 승인 검토에서 차단되어 운영 반영은 대기 중입니다. 아래는 기존 배포 기록이며 새 제한의 운영 적용 증거가 아닙니다. [보완 검증과 현재 상태](evidence/import-hardening.md)
+
 - 앱: [틈 · 나만의 Plan Do See Diary](https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site)
 - Site: `appgprj_6ae04fa3de4881918051ae92b695d273`
 - 운영 검증 기준 코드 커밋: `590e291e078840891d854c05f6657b00a45aa871`

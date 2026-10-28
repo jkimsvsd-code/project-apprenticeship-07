@@ -1081,6 +1081,45 @@
       "indexes": [],
       "checks": []
     },
+    "import_request_limits": {
+      "fields": [
+        {
+          "name": "user_id",
+          "type": "text",
+          "required": true,
+          "primary_key": true
+        },
+        {
+          "name": "window_start",
+          "type": "integer",
+          "required": true,
+          "primary_key": false
+        },
+        {
+          "name": "request_count",
+          "type": "integer",
+          "required": true,
+          "primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "name": "import_request_limits_user_id_auth_users_id_fk",
+          "tableFrom": "import_request_limits",
+          "tableTo": "auth_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      ],
+      "indexes": [],
+      "checks": []
+    },
     "imports": {
       "fields": [
         {

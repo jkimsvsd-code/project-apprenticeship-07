@@ -19,7 +19,8 @@
     "test:http": "node tests/integration/http-flow.mjs",
     "format": "prettier --write app src db/schema.ts tests scripts/test.mjs scripts/migrate-local.mjs scripts/schema-contract.mjs",
     "setup:local": "node scripts/setup-local.mjs",
-    "test:http:auth": "node tests/integration/http-auth.mjs"
+    "test:http:auth": "node tests/integration/http-auth.mjs",
+    "test:http:import": "node tests/integration/import-http.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

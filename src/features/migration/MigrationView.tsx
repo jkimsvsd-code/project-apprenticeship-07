@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Upload, CheckCircle2, LoaderCircle } from "lucide-react";
 import { request } from "../../shared/client";
+import { IMPORT_FILE_BYTES } from "../../shared/import-limits";
 type Preview = {
   counts: Record<string, number>;
   actual_minutes: number;
@@ -31,7 +32,7 @@ export default function MigrationView({
     setSource(null);
     setDone(false);
     if (!file) return;
-    if (file.size > 2_000_000) {
+    if (file.size > IMPORT_FILE_BYTES) {
       setError("2MB 이하의 과제6 JSON 파일을 선택해 주세요.");
       return;
     }
@@ -82,6 +83,10 @@ export default function MigrationView({
         <p>
           과제6의 ‘전체 내보내기’로 받은 JSON 파일을 선택하세요. 이 프로젝트에
           보관한 비공개 백업도 사용할 수 있어요.
+        </p>
+        <p className="muted">
+          파일은 2MB 이하, 계정당 서로 다른 파일 5개·누적 20,000건까지 가져올 수
+          있어요. 같은 파일의 재시도는 이 한도에 추가되지 않습니다.
         </p>
         <label className="file-picker">
           <Upload size={22} />
