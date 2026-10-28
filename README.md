@@ -7,6 +7,7 @@
 - 로컬 앱: 실행 후 `http://127.0.0.1:5173`
 - [GitHub 소스](https://github.com/jkimsvsd-code/project-apprenticeship-07)
 - [과제7 앱 열기](https://pds-diary-apprenticeship-07-m2021.happybay512.chatgpt.site) · [배포 및 운영 검증](docs/deployment.md)
+- [과제7 추가 구현 인터랙티브 설계도](https://pds-diary-architecture-07-m2021.happybay512.chatgpt.site)
 - [검증 결과](docs/evidence/verification-results.md) · [직접 진행할 5일 사용 절차](docs/five-day-guide.md)
 - [인증 구현 설명서](docs/authentication.md) · [승인 범위](docs/scope.md) · [요구사항 대응표](docs/requirements.md)
 
